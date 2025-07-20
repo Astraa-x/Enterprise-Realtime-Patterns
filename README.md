@@ -79,18 +79,166 @@ print(f"Notional value: ${trade_data.notional_value}")
 
 This repository implements proven patterns for high-performance real-time systems:
 
+### Enterprise-Grade System Architecture
+
 ```mermaid
 graph TB
-    A[External APIs] --> B[Circuit Breaker Layer]
-    B --> C[Data Validation Layer] 
-    C --> D[Stream Processing]
-    D --> E[Health Monitoring]
-    E --> F[Metrics & Alerting]
+    subgraph "External Data Sources"
+        E1["Exchange A<br/>(WebSocket API)"]
+        E2["Exchange B<br/>(WebSocket API)"]
+        E3["Exchange C<br/>(WebSocket API)"]
+        E4["Exchange D<br/>(WebSocket API)"]
+    end
+
+    subgraph "Data Ingestion Layer"
+        P1["Producer Service A"]
+        P2["Producer Service B"]
+        P3["Producer Service C"]
+        P4["Producer Service D"]
+    end
+
+    subgraph "Message Streaming"
+        K["Apache Kafka<br/>Message Broker"]
+    end
+
+    subgraph "Processing Layer"
+        C1["Consumer Service 1"]
+        C2["Consumer Service 2"]
+        C3["Consumer Service 3"]
+        DV["Data Validation<br/>& Standardization"]
+        CB["Circuit Breaker<br/>Fault Tolerance"]
+    end
+
+    subgraph "Storage Layer"
+        CH["ClickHouse<br/>Time-Series Database"]
+        R["Redis<br/>Caching Layer"]
+    end
+
+    subgraph "Monitoring & Operations"
+        P["Prometheus<br/>Metrics Collection"]
+        G["Grafana<br/>Visualization"]
+        A["Alerting<br/>System"]
+    end
+
+    subgraph "Kubernetes Platform"
+        K8S["Container Orchestration<br/>Auto-scaling & Health Management"]
+    end
+
+    E1 --> P1
+    E2 --> P2
+    E3 --> P3
+    E4 --> P4
+
+    P1 --> K
+    P2 --> K
+    P3 --> K
+    P4 --> K
+
+    K --> C1
+    K --> C2
+    K --> C3
+
+    C1 --> DV
+    C2 --> DV
+    C3 --> DV
+
+    DV --> CB
+    CB --> CH
+    DV --> R
+
+    CH --> P
+    R --> P
+    P --> G
+    P --> A
+
+    K8S -.-> P1
+    K8S -.-> P2
+    K8S -.-> C1
+    K8S -.-> C2
+
+    style E1 fill:#ff9999
+    style E2 fill:#ff9999
+    style E3 fill:#ff9999
+    style E4 fill:#ff9999
+    style K fill:#99ccff
+    style CH fill:#99ff99
+    style P fill:#ffcc99
+    style G fill:#ffcc99
+    style K8S fill:#cc99ff
+```
+
+### Technology Stack
+
+```mermaid
+graph TD
+    subgraph "Frontend & APIs"
+        API["REST APIs<br/>FastAPI"]
+        WS["WebSocket APIs<br/>Real-time Data"]
+        UI["Monitoring UI<br/>Grafana Dashboards"]
+    end
+
+    subgraph "Application Layer"
+        PY["Python 3.9+<br/>AsyncIO"]
+        PD["Pydantic<br/>Data Validation"]
+        ML["ML Libraries<br/>Data Processing"]
+    end
+
+    subgraph "Message & Streaming"
+        K["Apache Kafka<br/>Event Streaming"]
+        R["Redis<br/>In-Memory Cache"]
+        WS2["WebSocket Clients<br/>Exchange Connections"]
+    end
+
+    subgraph "Database Layer"
+        CH["ClickHouse<br/>OLAP Database"]
+        TS["Time-Series<br/>Optimization"]
+    end
+
+    subgraph "Infrastructure"
+        K8S["Kubernetes<br/>Orchestration"]
+        D["Docker<br/>Containerization"]
+        H["Helm<br/>Package Management"]
+    end
+
+    subgraph "Monitoring Stack"
+        P["Prometheus<br/>Metrics"]
+        G["Grafana<br/>Visualization"]
+        L["Logging<br/>Structured JSON"]
+    end
+
+    subgraph "DevOps & CI/CD"
+        GIT["Git<br/>Version Control"]
+        CI["CI/CD Pipeline<br/>Automated Testing"]
+        IaC["Infrastructure<br/>as Code"]
+    end
+
+    API --> PY
+    WS --> PY
+    PY --> PD
+    PY --> K
+    PY --> WS2
     
-    B -.-> G[Fault Tolerance]
-    C -.-> H[Type Safety]
-    D -.-> I[Performance]
-    E -.-> J[Reliability]
+    K --> CH
+    R --> CH
+    
+    PY --> R
+    
+    K8S --> D
+    D --> H
+    
+    CH --> P
+    K --> P
+    P --> G
+    
+    GIT --> CI
+    CI --> K8S
+
+    style PY fill:#3776ab,color:#fff
+    style K fill:#231f20,color:#fff
+    style CH fill:#ffcc02
+    style K8S fill:#326ce5,color:#fff
+    style P fill:#e6522c,color:#fff
+    style G fill:#f46800,color:#fff
 ```
 
 ### Core Components
@@ -137,6 +285,69 @@ except CircuitBreakerError:
 ```
 
 **Production Impact:** Eliminated 15-20 daily system failures, saving $8k/month in operational overhead.
+
+#### Circuit Breaker State Management
+
+```mermaid
+graph TD
+    subgraph "Circuit Breaker States"
+        CLOSED["CLOSED State<br/>🟢 Normal Operation<br/>• All requests allowed<br/>• Success/failure tracked<br/>• Error rate monitored"]
+        
+        OPEN["OPEN State<br/>🔴 Protective Mode<br/>• All requests blocked<br/>• Immediate fallback<br/>• Recovery countdown"]
+        
+        HALF_OPEN["HALF-OPEN State<br/>🟡 Testing Mode<br/>• Limited requests<br/>• Health validation<br/>• Quick decision"]
+    end
+
+    subgraph "Failure Detection"
+        REQ["Incoming Request"]
+        PROC["Request Processing"]
+        SUCCESS["✅ Success Response"]
+        FAIL["❌ Failure Response"]
+        COUNT["Error Counter<br/>Track failure rate"]
+        THRESH["Threshold Check<br/>5 failures in 30s"]
+    end
+
+    subgraph "Recovery Logic"
+        TIMER["Recovery Timer<br/>60 seconds wait"]
+        TEST["Test Request"]
+        EVAL["Response Evaluation"]
+        RESET["Reset Circuit"]
+    end
+
+    subgraph "Fallback Strategies"
+        CACHE["Cached Data<br/>Last known good state"]
+        DEFAULT["Default Response<br/>Safe fallback values"]
+        RETRY["Retry Queue<br/>Delayed processing"]
+    end
+
+    REQ --> PROC
+    PROC --> SUCCESS
+    PROC --> FAIL
+    
+    SUCCESS --> CLOSED
+    FAIL --> COUNT
+    COUNT --> THRESH
+    
+    THRESH -->|"Threshold Exceeded"| OPEN
+    OPEN -->|"Timeout Elapsed"| TIMER
+    TIMER --> HALF_OPEN
+    
+    HALF_OPEN --> TEST
+    TEST --> EVAL
+    EVAL -->|"Success"| RESET
+    EVAL -->|"Failure"| OPEN
+    RESET --> CLOSED
+    
+    OPEN --> CACHE
+    OPEN --> DEFAULT
+    OPEN --> RETRY
+
+    style CLOSED fill:#2ecc71,color:#fff
+    style OPEN fill:#e74c3c,color:#fff
+    style HALF_OPEN fill:#f39c12,color:#fff
+    style SUCCESS fill:#27ae60,color:#fff
+    style FAIL fill:#c0392b,color:#fff
+```
 
 ### 2. Real-Time Data Validation
 
@@ -243,7 +454,84 @@ This code powers production systems processing:
 - **Reliability**: 99.9% uptime over 12+ months
 - **Scale**: 4 simultaneous exchange integrations
 
-### Business Impact
+### Business Impact & Transformation Results
+
+```mermaid
+graph TD
+    subgraph "BEFORE: Legacy System Performance"
+        B1["⚠️ Processing Latency<br/>3-5 seconds average<br/>Peak: 10+ seconds"]
+        B2["❌ System Reliability<br/>Daily failures<br/>Manual intervention required"]
+        B3["💸 Operational Costs<br/>High maintenance overhead<br/>$25k/month operational costs"]
+        B4["📉 Throughput Capacity<br/>50-100 messages/second<br/>Frequent bottlenecks"]
+        B5["🚨 Monitoring Gaps<br/>Limited visibility<br/>Reactive problem solving"]
+    end
+
+    subgraph "OPTIMIZATION PROCESS"
+        O1["🔍 System Analysis<br/>• Bottleneck identification<br/>• Performance profiling<br/>• Architecture review"]
+        O2["⚙️ Technology Upgrade<br/>• Microservices architecture<br/>• Modern tech stack<br/>• Cloud-native deployment"]
+        O3["🛠️ Implementation<br/>• Kubernetes orchestration<br/>• ClickHouse optimization<br/>• Circuit breaker patterns"]
+        O4["📊 Monitoring Setup<br/>• Prometheus/Grafana<br/>• Real-time dashboards<br/>• Proactive alerting"]
+    end
+
+    subgraph "AFTER: Optimized System Performance"
+        A1["✅ Processing Latency<br/>&lt;1 second average<br/>5x improvement"]
+        A2["🎯 System Reliability<br/>99.9% uptime<br/>Zero manual interventions"]
+        A3["💰 Cost Savings<br/>$180k+ annual savings<br/>75% cost reduction"]
+        A4["🚀 Throughput Capacity<br/>500+ messages/second<br/>10x improvement"]
+        A5["📈 Advanced Monitoring<br/>Real-time insights<br/>Predictive maintenance"]
+    end
+
+    subgraph "Business Impact"
+        ROI["📊 ROI Metrics<br/>• €45k investment<br/>• €180k annual savings<br/>• 400% ROI in Year 1"]
+        SCALE["📈 Scalability<br/>• Ready for 10x growth<br/>• Auto-scaling enabled<br/>• Future-proof architecture"]
+        RISK["🛡️ Risk Reduction<br/>• Eliminated single points of failure<br/>• Automated recovery<br/>• Enterprise-grade reliability"]
+    end
+
+    B1 --> O1
+    B2 --> O1
+    B3 --> O1
+    B4 --> O1
+    B5 --> O1
+
+    O1 --> O2
+    O2 --> O3
+    O3 --> O4
+
+    O4 --> A1
+    O4 --> A2
+    O4 --> A3
+    O4 --> A4
+    O4 --> A5
+
+    A1 --> ROI
+    A2 --> SCALE
+    A3 --> ROI
+    A4 --> SCALE
+    A5 --> RISK
+
+    style B1 fill:#e74c3c,color:#fff
+    style B2 fill:#e74c3c,color:#fff
+    style B3 fill:#e74c3c,color:#fff
+    style B4 fill:#e74c3c,color:#fff
+    style B5 fill:#e74c3c,color:#fff
+
+    style O1 fill:#f39c12,color:#fff
+    style O2 fill:#f39c12,color:#fff
+    style O3 fill:#f39c12,color:#fff
+    style O4 fill:#f39c12,color:#fff
+
+    style A1 fill:#2ecc71,color:#fff
+    style A2 fill:#2ecc71,color:#fff
+    style A3 fill:#2ecc71,color:#fff
+    style A4 fill:#2ecc71,color:#fff
+    style A5 fill:#2ecc71,color:#fff
+
+    style ROI fill:#9b59b6,color:#fff
+    style SCALE fill:#9b59b6,color:#fff
+    style RISK fill:#9b59b6,color:#fff
+```
+
+### Quantified Results
 
 | Metric | Before Implementation | After Implementation | Improvement |
 |--------|----------------------|---------------------|-------------|
@@ -260,6 +548,61 @@ This code powers production systems processing:
 ---
 
 ## 🛠️ Advanced Features
+
+### Enterprise Monitoring Stack
+
+```mermaid
+graph TD
+    subgraph "Data Sources"
+        APP["Application Metrics<br/>• Latency<br/>• Throughput<br/>• Error Rates"]
+        INFRA["Infrastructure Metrics<br/>• CPU/Memory<br/>• Network I/O<br/>• Storage"]
+        BUS["Business Metrics<br/>• Messages Processed<br/>• Data Quality<br/>• Cost Efficiency"]
+    end
+
+    subgraph "Metrics Collection"
+        PROM["Prometheus<br/>Time-Series Database"]
+        NODE["Node Exporter<br/>System Metrics"]
+        APP_EXP["Application Exporter<br/>Custom Metrics"]
+    end
+
+    subgraph "Visualization Layer"
+        GRAF["Grafana Dashboards"]
+        PERF["Performance Dashboard<br/>• Latency: &lt;1s<br/>• Throughput: 500+ msg/s<br/>• Uptime: 99.9%"]
+        SYS["System Dashboard<br/>• Resource Utilization<br/>• Health Status<br/>• Capacity Planning"]
+        BIZ["Business Dashboard<br/>• Cost Savings: $180k+<br/>• Quality Score: 95%+<br/>• Processing Volume"]
+    end
+
+    subgraph "Alerting System"
+        ALERT["AlertManager<br/>Intelligent Routing"]
+        RULES_A["Alert Rules<br/>• SLA Violations<br/>• Error Thresholds<br/>• Capacity Warnings"]
+        NOTIF["Notifications<br/>• Email<br/>• Slack<br/>• PagerDuty"]
+    end
+
+    APP --> APP_EXP
+    INFRA --> NODE
+    BUS --> APP_EXP
+
+    APP_EXP --> PROM
+    NODE --> PROM
+
+    PROM --> GRAF
+    GRAF --> PERF
+    GRAF --> SYS
+    GRAF --> BIZ
+
+    PROM --> ALERT
+    ALERT --> RULES_A
+    RULES_A --> NOTIF
+
+    style PERF fill:#2ecc71,color:#fff
+    style SYS fill:#3498db,color:#fff
+    style BIZ fill:#f39c12,color:#fff
+    style PROM fill:#e6522c,color:#fff
+    style GRAF fill:#f46800,color:#fff
+    style ALERT fill:#e74c3c,color:#fff
+```
+
+### Core Features
 
 ### Data Quality Assessment
 - Automatic quality scoring (0.0-1.0 scale)
