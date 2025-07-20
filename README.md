@@ -2,7 +2,7 @@
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code Quality](https://img.shields.io/badge/code%20quality-enterprise-green.svg)](https://github.com/yourusername/enterprise-realtime-patterns)
+[![Code Quality](https://img.shields.io/badge/code%20quality-enterprise-green.svg)](https://github.com/Astraa-x/Enterprise-Realtime-Patterns)
 
 > Production-tested patterns and implementations for high-performance real-time data processing systems. Built for FinTech, trading platforms, and financial data infrastructure.
 
@@ -36,8 +36,8 @@ This repository showcases **enterprise-grade engineering patterns** developed an
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/enterprise-realtime-patterns.git
-cd enterprise-realtime-patterns
+git clone https://github.com/Astraa-x/Enterprise-Realtime-Patterns.git
+cd Enterprise-Realtime-Patterns
 
 # Install dependencies
 pip install -r requirements.txt
@@ -381,10 +381,10 @@ I provide consulting and development services for enterprise real-time systems:
 ### Contact
 
 **Engineering Consulting & Development**
-- 📧 Email: [your.email@domain.com](mailto:your.email@domain.com)
-- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-- 🐙 GitHub: [github.com/yourusername](https://github.com/yourusername)
-- 📅 Schedule Consultation: [calendly.com/yourname](https://calendly.com/yourname)
+- 📧 Email: [justincodes01@web.de](mailto:justincodes01@web.de)
+- 💼 LinkedIn: [linkedin.com/in/justin-peters-68b9aa361](https://www.linkedin.com/in/justin-peters-68b9aa361/)
+- 🐙 GitHub: [github.com/Astraa-x](https://github.com/Astraa-x)
+- 📅 Schedule Consultation: [justincodes01@web.de](mailto:justincodes01@web.de)
 
 **Specializations**: Real-Time Systems | FinTech Infrastructure | Kubernetes | Python | DevOps
 

@@ -41,16 +41,16 @@ if DEV_REQUIREMENTS_PATH.exists():
 setup(
     name="enterprise-realtime-patterns",
     version="1.0.0",
-    author="Real-Time Systems Engineering",
-    author_email="your.email@domain.com",
+    author="Justin Peters - Real-Time Systems Engineering",
+    author_email="justincodes01@web.de",
     description="Production-tested patterns for high-performance real-time data processing",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/enterprise-realtime-patterns",
+    url="https://github.com/Astraa-x/Enterprise-Realtime-Patterns",
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/enterprise-realtime-patterns/issues",
-        "Source": "https://github.com/yourusername/enterprise-realtime-patterns",
-        "Documentation": "https://enterprise-realtime-patterns.readthedocs.io/",
+        "Bug Reports": "https://github.com/Astraa-x/Enterprise-Realtime-Patterns/issues",
+        "Source": "https://github.com/Astraa-x/Enterprise-Realtime-Patterns",
+        "Documentation": "https://github.com/Astraa-x/Enterprise-Realtime-Patterns/wiki",
     },
     
     # Package configuration

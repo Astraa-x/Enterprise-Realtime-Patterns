@@ -16,8 +16,8 @@ License: MIT
 """
 
 __version__ = "1.0.0"
-__author__ = "Real-Time Systems Engineering"
-__email__ = "your.email@domain.com"
+__author__ = "Justin Peters - Real-Time Systems Engineering"
+__email__ = "justincodes01@web.de"
 
 # Core pattern exports
 from .circuit_breaker import (
