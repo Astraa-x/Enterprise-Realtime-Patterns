@@ -1,0 +1,44 @@
+# Enterprise Real-Time Patterns - Production Dependencies
+# 
+# Core dependencies for high-performance real-time data processing
+# Based on production deployments processing 500+ messages/second
+
+# ===== Core Framework Dependencies =====
+pydantic>=1.10.0,<2.0.0         # Type-safe data validation and settings
+asyncio                          # Async/await support (Python 3.7+)
+typing-extensions>=4.0.0         # Extended type hints support
+
+# ===== Kafka Streaming =====
+aiokafka>=0.8.0                 # Async Kafka client for high-performance streaming
+kafka-python>=2.0.2             # Kafka protocol support and utilities
+
+# ===== HTTP and Network =====
+aiohttp>=3.8.0                  # Async HTTP client/server for health checks
+httpx>=0.24.0                   # Modern HTTP client with async support
+uvloop>=0.17.0; sys_platform != "win32"  # High-performance event loop (Unix only)
+
+# ===== Monitoring and Observability =====
+prometheus-client>=0.15.0       # Prometheus metrics export
+psutil>=5.9.0                   # System resource monitoring
+structlog>=22.0.0               # Structured logging for production
+
+# ===== Data Processing =====
+orjson>=3.8.0                   # Fast JSON serialization for high-throughput
+msgpack>=1.0.4                  # Binary serialization for performance
+pytz>=2022.1                    # Timezone handling for financial data
+
+# ===== Database Connectivity =====
+asyncpg>=0.27.0                 # Async PostgreSQL driver
+aioredis>=2.0.1                 # Async Redis client for caching
+clickhouse-driver>=0.2.5        # ClickHouse database driver
+
+# ===== Configuration Management =====
+pyyaml>=6.0                     # YAML configuration files
+python-dotenv>=0.20.0           # Environment variable management
+
+# ===== Security =====
+cryptography>=38.0.0            # Cryptographic operations
+bcrypt>=4.0.0                   # Password hashing
+
+# ===== Development and Code Quality =====
+# These are moved to requirements-dev.txt for cleaner production deploys 

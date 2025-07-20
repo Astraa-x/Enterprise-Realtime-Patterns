@@ -1,0 +1,61 @@
+# Development Dependencies for Enterprise Real-Time Patterns
+#
+# Testing, code quality, and development tools
+# Install with: pip install -r requirements-dev.txt
+
+# ===== Include Production Dependencies =====
+-r requirements.txt
+
+# ===== Testing Framework =====
+pytest>=7.2.0                   # Modern testing framework
+pytest-asyncio>=0.21.0          # Async test support
+pytest-cov>=4.0.0              # Test coverage reporting
+pytest-mock>=3.10.0            # Mocking utilities
+pytest-benchmark>=4.0.0        # Performance benchmarking
+pytest-xdist>=3.1.0            # Parallel test execution
+
+# ===== Property-Based Testing =====
+hypothesis>=6.60.0              # Property-based testing for robust validation
+
+# ===== Code Quality and Linting =====
+black>=22.0.0                   # Code formatting
+isort>=5.11.0                   # Import sorting
+flake8>=6.0.0                   # Style guide enforcement
+mypy>=1.0.0                     # Static type checking
+pylint>=2.15.0                  # Comprehensive code analysis
+
+# ===== Security Scanning =====
+bandit>=1.7.4                   # Security vulnerability scanning
+safety>=2.3.0                   # Dependency vulnerability checking
+
+# ===== Documentation =====
+sphinx>=5.3.0                   # Documentation generation
+sphinx-rtd-theme>=1.1.0         # ReadTheDocs theme
+sphinx-autodoc-typehints>=1.19.0  # Type hint documentation
+
+# ===== Performance Profiling =====
+py-spy>=0.3.14                  # Production profiling
+memory-profiler>=0.61.0         # Memory usage profiling
+line-profiler>=4.0.0            # Line-by-line profiling
+
+# ===== Development Utilities =====
+ipython>=8.7.0                  # Enhanced interactive shell  
+jupyter>=1.0.0                  # Notebook development
+pre-commit>=2.20.0              # Git pre-commit hooks
+tox>=4.0.0                      # Testing across Python versions
+
+# ===== API Testing =====
+httpx[cli]>=0.24.0              # HTTP testing with CLI tools
+responses>=0.22.0               # HTTP request mocking
+
+# ===== Load Testing =====
+locust>=2.14.0                  # Load testing framework
+aioload>=1.1.0                  # Async load testing
+
+# ===== Container Development =====
+docker>=6.0.0                   # Docker Python SDK
+docker-compose>=1.29.0          # Multi-container applications
+
+# ===== CI/CD Tools =====
+coverage>=7.0.0                 # Coverage analysis
+codecov>=2.1.12                 # Coverage reporting service 
